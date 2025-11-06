@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer capsule (dark glass) -->
+  <path d="M14 8C10 8 8 11.134 8 14.5V33.5C8 36.866 10 40 14 40H34C38 40 40 36.866 40 33.5V14.5C40 11.134 38 8 34 8H14Z" 
+        fill="url(#glass)" stroke="url(#border)" stroke-width="1.5"/>
+  
+  <!-- Inner crystal (time core) -->
+  <path d="M18 16L24 22L30 16L30 32L24 26L18 32V16Z" 
+        fill="url(#core)" stroke="url(#core-stroke)" stroke-width="1"/>
+
+  <!-- Neon glow halo -->
+  <defs>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1A1A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </linearGradient>
+    <linearGradient id="border" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00D9FF" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF"/>
+      <stop offset="100%" stop-color="#00B8E6"/>
+    </linearGradient>
+    <linearGradient id="core-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00FFFF"/>
+      <stop offset="100%" stop-color="#00D9FF"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#00D9FF" flood-opacity="0.6"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Apply glow to capsule -->
+  <use href="#glass-path" filter="url(#glow)"/>
+</svg>
