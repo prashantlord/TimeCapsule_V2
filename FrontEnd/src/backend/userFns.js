@@ -12,7 +12,6 @@ const getUser = async () => {
     const res = await axios.get(`${endpoint}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
     });
     console.log(res);
@@ -70,7 +69,27 @@ const register = async (username, email, password) => {
 };
 
 const logoutUser = async () => {
-  return token;
+  const token = JSON.parse(localStorage.getItem("auth_token"));
+  try {
+    const res = await axios.post(
+      "http://127.0.0.1:8000/api/logout",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    localStorage.removeItem("auth_role");
+    localStorage.removeItem("auth_token");
+
+    return true;
+  } catch (error) {
+    console.log("fuck");
+    return false;
+  }
 };
 
 export { login, register, getUser, logoutUser };

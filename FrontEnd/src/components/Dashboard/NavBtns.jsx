@@ -5,7 +5,7 @@ function NavBtns({ navItems, setActiveNav, activeNav, handleClick }) {
     <>
       {navItems.map((item) => {
         const Icon = item.icon;
-        const active = activeNav === item.link;
+        const active = activeNav.link === item.link;
         return (
           <button
             key={item.link}
@@ -16,7 +16,7 @@ function NavBtns({ navItems, setActiveNav, activeNav, handleClick }) {
                         : "hover:bg-gray-900/40 border border-transparent"
                     } ${item.danger ? "text-red-400 hover:bg-red-500/10" : ""}`}
             onClick={() => {
-              setActiveNav(item.link);
+              setActiveNav(item);
               handleClick(item.link);
             }}
           >

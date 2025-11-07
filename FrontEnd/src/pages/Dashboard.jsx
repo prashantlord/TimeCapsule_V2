@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { getUser } from "../backend/userFns";
 import { UserProvider } from "../context/useData";
-import axios from "axios";
 import LeftBar from "../components/Dashboard/LeftBar";
 import Header from "../components/Dashboard/Header";
+import { Globe, Home, Package, PlusCircle, Settings } from "lucide-react";
+import { Outlet } from "react-router";
 
 function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeNav, setActiveNav] = useState({
+    label: "Dashboard",
+    link: "dashboard",
+    icon: Home,
+  });
   const [userDetails, setUserDetails] = useState({
     id: 1,
     username: "Guest",
     email: "guest",
   });
-  const [statusBar, setStatusBar] = useState(false);
+  const [statusBar, setStatusBar] = useState(true);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -23,18 +29,18 @@ function Dashboard() {
 
       if (token) {
         {
-          localStorage.setItem("auth_token", token);
-          localStorage.setItem("auth_role", "user");
+          localStorage.setItem("auth_token", JSON.stringify(token));
+          localStorage.setItem("auth_role", JSON.stringify("user"));
         }
         navigate("/dashboard", { replace: true });
         return;
       }
 
       const valid_user = await getUser();
-
+      console.log(valid_user);
       if (!valid_user) {
         navigate("/login");
-        console.log("breaks here");
+
         return;
       }
       let temp = {
@@ -47,6 +53,33 @@ function Dashboard() {
     };
     checkUser();
   }, []);
+  const navItems = [
+    {
+      label: "Dashboard",
+      link: "dashboard",
+      icon: Home,
+    },
+    {
+      label: "Create Capsule",
+      link: "create",
+      icon: PlusCircle,
+    },
+    {
+      label: "My Capsules",
+      link: "my",
+      icon: Package,
+    },
+    {
+      label: "Public Capsules",
+      link: "public",
+      icon: Globe,
+    },
+    {
+      label: "Settings",
+      link: "settings",
+      icon: Settings,
+    },
+  ];
 
   return (
     <>
@@ -55,10 +88,23 @@ function Dashboard() {
 
       <UserProvider value={{ userDetails, setUserDetails }}>
         <div className="flex min-h-screen">
-          <LeftBar statusBar={statusBar} setStatusBar={setStatusBar} />
+          <LeftBar
+            statusBar={statusBar}
+            setStatusBar={setStatusBar}
+            activeNav={activeNav}
+            setActiveNav={setActiveNav}
+            navItems={navItems}
+          />
 
           <div className="flex-1 flex flex-col">
-            <Header statusBar={statusBar} setStatusBar={setStatusBar} />
+            <Header
+              statusBar={statusBar}
+              setStatusBar={setStatusBar}
+              activeNav={activeNav}
+            />
+            <main className="flex px-5 mt-5">
+              <Outlet />
+            </main>
           </div>
         </div>
       </UserProvider>

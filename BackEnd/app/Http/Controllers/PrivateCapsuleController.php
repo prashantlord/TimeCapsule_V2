@@ -30,15 +30,15 @@ class PrivateCapsuleController extends Controller
         }
 
         try {
-            $locked_capsules = PrivateCapsules::where('user_id', $req->user_id)->where('open_status', 0)->get();
-            $unlocked_capsules = PrivateCapsules::where('user_id', $req->user_id)->where('open_status', 1)->get();
-            $images = PrivateCapsules::where('user_id', $req->user_id)->where('open_status', 1)
+            $locked_capsules = PrivateCapsules::where('user_id', $req->user_id)->where('open_status', 0)->with('image')->get();
+
+            $unlocked_capsules = PrivateCapsules::where('user_id', $req->user_id)->where('open_status', 1)
                 ->with('image')
                 ->get();
 
             return response()->json([
                 'locked_capsule' => $locked_capsules,
-                'unlocked_capsule' => $images
+                'unlocked_capsule' => $unlocked_capsules
             ], 200);
         } catch (Exception $e) {
             return response()->json([

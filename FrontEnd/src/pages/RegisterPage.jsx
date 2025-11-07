@@ -2,11 +2,12 @@ import { motion } from "framer-motion";
 import InputFld from "../components/login/InputFld";
 import { Link, useNavigate } from "react-router";
 import Btn from "../components/login/Btn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { register } from "../backend/userFns";
 import Divider from "../components/login/Divider";
 import OauthBtns from "../components/login/OauthBtns";
 import ErrorPop from "../components/login/ErrorPop";
+import { getUser } from "../backend/userFns";
 
 export default function RegsiterPage() {
   const [username, setUserName] = useState("");
@@ -16,10 +17,24 @@ export default function RegsiterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const isAvalable = async () => {
+      const valid_user = await getUser();
+      if (valid_user) {
+        if (JSON.parse(localStorage.getItem("auth_role")) === "admin") {
+          navigate("/admin");
+          return;
+        }
+        navigate("/dashboard");
+      }
+    };
+    isAvalable();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading((prev) => !prev);
-    const res = register(username, email, password);
+    const res = await register(username, email, password);
     if (res) navigate("/dashboard");
     else setError("Oops! Something’s not quite right.");
     setIsLoading((prev) => !prev);

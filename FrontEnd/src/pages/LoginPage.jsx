@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import InputFld from "../components/login/InputFld";
 import { Link, useNavigate } from "react-router";
 import Btn from "../components/login/Btn";
-import { useState } from "react";
-import { login } from "../backend/userFns";
+import { useEffect, useState } from "react";
+import { getUser, login } from "../backend/userFns";
 import Divider from "../components/login/Divider";
 import OauthBtns from "../components/login/OauthBtns";
 import ErrorPop from "../components/login/ErrorPop";
 import { pre } from "framer-motion/client";
+import { userData } from "../context/useData";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -16,11 +17,27 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const isAvalable = async () => {
+      const valid_user = await getUser();
+      if (valid_user) {
+        if (JSON.parse(localStorage.getItem("auth_role")) === "admin") {
+          navigate("/admin");
+          return;
+        }
+        navigate("/dashboard");
+      }
+    };
+    isAvalable();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsLoading((prev) => !prev);
 
-    const res = login(email, password);
+    const res = await login(email, password);
+
     if (res) {
       if (JSON.parse(localStorage.getItem("auth_role")) === "admin") {
         navigate("/admin");

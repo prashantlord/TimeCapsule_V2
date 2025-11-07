@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\PrivateCapsuleController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -21,8 +22,8 @@ class Image extends Model
         'image_location'
     ];
 
-    function user()
+    function capsule()
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(PrivateCapsuleController::class, 'private_capsules_id');
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Admin;
 use App\Models\User;
 
 use Exception;
-
+use Illuminate\Http\Client\Events\ResponseReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -109,13 +109,29 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Registration Failed',
                 'error' => $e->getMessage()
-            ]);
+            ], 401);
         }
         $token = $reg_user->createToken('auth_token')->plainTextToken;
         return response()->json([
             'message' => 'Register Successfully',
             'role' => 'user',
             'token' => $token
-        ]);
+        ], 200);
+    }
+
+    public function logout(Request $req)
+    {
+        try {
+            $req->user()->clearAccessToken()->delete();
+            return response()->json([
+                'message' => 'Logout Successfully',
+
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error while logging out',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

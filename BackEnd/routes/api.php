@@ -16,12 +16,15 @@ Route::middleware('auth:admin')->get('/admin', function (Request $request) {
     return $request->user(); // returns the authenticated admin
 });
 
+
+
 /**
  * UseCase: Rest API endpoints
  * Description: Login/ register/ logout/ getuser functions
  */
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
+Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
 
 
 
@@ -50,7 +53,7 @@ Route::get('/githubAuth', [OauthController::class, 'githubAuthentication']);
  * Controller: PrivateCapsuleController
  */
 
-Route::post('/private', [PrivateCapsuleController::class, 'fetch']);
+Route::post('/private/fetch', [PrivateCapsuleController::class, 'fetch']);
 Route::post('/private/create', [PrivateCapsuleController::class, 'create']);
 
 
