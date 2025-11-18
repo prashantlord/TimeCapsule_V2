@@ -17,13 +17,9 @@ function DashMain() {
     navigate(`/dashboard/${link}`);
   };
 
-  const createPrivateCapsule = async () => {
-    return true;
-  };
-
   return (
     <>
-      <div className="w-full flex flex-col xl:flex-row gap-5">
+      <div className="w-full flex flex-col xl:flex-row gap-5 px-5">
         <div className="w-full">
           <ActionButtons
             quickActions={quickActions}

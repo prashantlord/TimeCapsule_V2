@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { getUser } from "../backend/userFns";
-import { UserProvider } from "../context/useData";
-import LeftBar from "../components/Dashboard/LeftBar";
-import Header from "../components/Dashboard/Header";
+import { getUser } from "../../backend/userFns";
+import { UserProvider } from "../../context/useData";
+import LeftBar from "./Dashboard/LeftBar";
+import Header from "./Dashboard/Header";
 import { Globe, Home, Package, PlusCircle, Settings } from "lucide-react";
 import { Outlet } from "react-router";
+import { path } from "framer-motion/client";
+import { getPrivateCapsules } from "../../backend/privateFns";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -15,11 +17,7 @@ function Dashboard() {
     link: "dashboard",
     icon: Home,
   });
-  const [userDetails, setUserDetails] = useState({
-    id: 1,
-    username: "Guest",
-    email: "guest",
-  });
+  const [userDetails, setUserDetails] = useState({});
   const [statusBar, setStatusBar] = useState(true);
 
   useEffect(() => {
@@ -37,7 +35,7 @@ function Dashboard() {
       }
 
       const valid_user = await getUser();
-      console.log(valid_user);
+
       if (!valid_user) {
         navigate("/login");
 
@@ -53,6 +51,18 @@ function Dashboard() {
     };
     checkUser();
   }, []);
+
+  useEffect(() => {
+    const pathParts = location.pathname.split("/").filter(Boolean);
+
+    const currentSection = pathParts[1] || "dashboard";
+
+    const matched = navItems.find((item) => item.link === currentSection);
+    if (matched && matched.link !== activeNav.link) {
+      setActiveNav(matched);
+    }
+  }, [location.pathname]);
+
   const navItems = [
     {
       label: "Dashboard",
@@ -83,10 +93,15 @@ function Dashboard() {
 
   return (
     <>
-      <div className="absolute -z-10 inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+      {/* <div className="absolute -z-10 inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px]"></div> */}
       <div className="absolute -z-10 inset-0 bg-gradient-to-br from-[#111111] via-[#141414] to-[#0a0a0a] opacity-95"></div>
 
-      <UserProvider value={{ userDetails, setUserDetails }}>
+      <UserProvider
+        value={{
+          userDetails,
+          setUserDetails,
+        }}
+      >
         <div className="flex min-h-screen">
           <LeftBar
             statusBar={statusBar}
@@ -102,7 +117,7 @@ function Dashboard() {
               setStatusBar={setStatusBar}
               activeNav={activeNav}
             />
-            <main className="flex px-5 mt-5">
+            <main className="flex mt-5 flex-1">
               <Outlet />
             </main>
           </div>

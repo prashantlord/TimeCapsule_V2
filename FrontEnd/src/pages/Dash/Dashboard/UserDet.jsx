@@ -10,11 +10,15 @@ function UserDet({ handleLogout }) {
         <div className=" flex gap-3 md:gap-4 text-cyan-50 ">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-px">
             <div className="w-full h-full rounded-full bg-black flex items-center justify-center  font-bold">
-              {userDetails.username[0].toUpperCase()}
+              {userDetails.username
+                ? userDetails.username[0].toUpperCase()
+                : "G"}
             </div>
           </div>
           <div className="flex flex-col justify-center">
-            <p className="text-sm font-medium">{userDetails.username}</p>
+            <p className="text-sm font-medium">
+              {userDetails?.username || "Guest"}
+            </p>
             <p className="text-xs text-gray-400 flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>{" "}
               Active

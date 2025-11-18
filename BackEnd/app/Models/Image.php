@@ -18,7 +18,7 @@ class Image extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'private_capsule_id',
+        'private_capsules_id',
         'image_location'
     ];
 

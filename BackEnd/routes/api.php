@@ -4,6 +4,7 @@ use App\Http\Controllers\OauthController;
 use App\Http\Controllers\PrivateCapsuleController;
 use App\Http\Controllers\UserController;
 use App\Models\Admin;
+use App\Models\PrivateCapsules;
 use Illuminate\Http\Client\Events\ResponseReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,7 @@ Route::get('auth/github', [OauthController::class, 'githubLogin']);
 Route::get('/githubAuth', [OauthController::class, 'githubAuthentication']);
 
 
+
 /**
  * useCase: UserDate Fetch
  * Description: Fetch data from PrivateCapsules table from the front end through rest API
@@ -54,7 +56,10 @@ Route::get('/githubAuth', [OauthController::class, 'githubAuthentication']);
  */
 
 Route::post('/private/fetch', [PrivateCapsuleController::class, 'fetch']);
-Route::post('/private/create', [PrivateCapsuleController::class, 'create']);
+Route::middleware("auth:sanctum")->post("/private/create", [PrivateCapsuleController::class, "create"]);
+
+
+
 
 
 

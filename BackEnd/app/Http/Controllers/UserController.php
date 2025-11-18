@@ -7,6 +7,7 @@ use App\Models\User;
 
 use Exception;
 use Illuminate\Http\Client\Events\ResponseReceived;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class UserController extends Controller
      * @param Request $req $email $password
      * @return string $token
      */
-    public function login(Request $req)
+    public function login(Request $req): JsonResponse
     {
         $validator = Validator::make($req->all(), [
             'email' => 'required|string|email',
@@ -86,7 +87,7 @@ class UserController extends Controller
      * @param Request $req $username $email $password
      * @return string $token
      */
-    public function register(Request $req)
+    public function register(Request $req): JsonResponse
     {
         $validator = Validator::make($req->all(), [
             'username' => 'required|string|min:5',
@@ -119,7 +120,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function logout(Request $req)
+    public function logout(Request $req): JsonResponse
     {
         try {
             $req->user()->clearAccessToken()->delete();

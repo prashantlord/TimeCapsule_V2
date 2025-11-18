@@ -1,16 +1,15 @@
 import { motion } from "framer-motion";
-import InputFld from "../components/login/InputFld";
 import { Link, useNavigate } from "react-router";
-import Btn from "../components/login/Btn";
-import { useState, useEffect } from "react";
-import { register } from "../backend/userFns";
-import Divider from "../components/login/Divider";
-import OauthBtns from "../components/login/OauthBtns";
-import ErrorPop from "../components/login/ErrorPop";
-import { getUser } from "../backend/userFns";
+import { useEffect, useState } from "react";
 
-export default function RegsiterPage() {
-  const [username, setUserName] = useState("");
+import InputFld from "./components/InputFld";
+import { getUser, login } from "/src/backend/userFns.js";
+import Divider from "./components/Divider";
+import OauthBtns from "./components/OauthBtns";
+import ErrorPop from "./components/ErrorPop";
+import Btn from "./components/Btn";
+
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -33,15 +32,23 @@ export default function RegsiterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsLoading((prev) => !prev);
-    const res = await register(username, email, password);
-    if (res) navigate("/dashboard");
-    else setError("Oops! Something’s not quite right.");
+
+    const res = await login(email, password);
+
+    if (res) {
+      if (JSON.parse(localStorage.getItem("auth_role")) === "admin") {
+        navigate("/admin");
+        return;
+      }
+      navigate("/dashboard");
+    } else setError("Oops! We couldn’t log you in.");
     setIsLoading((prev) => !prev);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#0c0c0c] text-white font-['DM Sans']">
+    <div className="min-h-screen flex    items-center justify-center relative overflow-hidden bg-[#0c0c0c] text-white font-['DM Sans']">
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#111111] via-[#141414] to-[#0a0a0a] opacity-95"></div>
       <ErrorPop show={error} />
@@ -52,18 +59,10 @@ export default function RegsiterPage() {
         className="relative z-10 w-full max-w-md bg-[#151515]/80 border border-[#222] rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.6)] p-8 backdrop-blur-md"
       >
         <h2 className="text-3xl font-semibold text-center mb-8 tracking-tight text-gray-100">
-          Sign Up
+          Sign In
         </h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <InputFld
-            label="User Name"
-            type="text"
-            placeholder="Jon Doe"
-            state={username}
-            setState={setUserName}
-          />
-
           <InputFld
             label="Email Address"
             type="email"
@@ -80,7 +79,7 @@ export default function RegsiterPage() {
             setState={setPassword}
           />
 
-          <Btn label="Register" type="submit" isLoading={isLoading} />
+          <Btn label="Login" type="submit" isLoading={isLoading} />
         </form>
 
         <Divider />
@@ -88,9 +87,9 @@ export default function RegsiterPage() {
         <OauthBtns />
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Alredy have an account?{" "}
-          <Link to="/login" className="text-[#00b4d8] hover:underline">
-            Sign in
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-[#00b4d8] hover:underline">
+            Sign up
           </Link>
         </p>
       </motion.div>

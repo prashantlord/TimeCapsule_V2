@@ -4,39 +4,41 @@ import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
-import LoginPage from "./pages/LoginPage.jsx";
-import RegsiterPage from "./pages/RegisterPage.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import AdminPage from "./pages/AdminPage.jsx";
-import DashMain from "./pages/dashboarditem/DashMain.jsx";
+import Login from "./pages/loginPage/Login.jsx";
+import Register from "./pages/loginPage/Register.jsx";
+import Home from "./pages/homePage/Home";
+import Dashboard from "./pages/dashboardPage/Dashboard.jsx";
+import Create from "./pages/dashboardPage/Create.jsx";
+import MyCapsules from "./pages/dashboardPage/MyCapsules.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{}],
+  },
+  {
+    path: "/home",
+    element: <Home />,
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <RegsiterPage />,
-  },
-  {
-    path: "/admin",
-    element: <AdminPage />,
+    element: <Register />,
   },
   {
     path: "/dashboard",
     element: <Dashboard />,
-    children: [
-      {
-        path: "/dashboard",
-        element: <DashMain />,
-      },
-    ],
+  },
+  {
+    path: "/dashboard/create",
+    element: <Create />,
+  },
+  {
+    path: "/dashboard/my",
+    element: <MyCapsules />,
   },
 ]);
 

@@ -14,7 +14,7 @@ const getUser = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res);
+
     return res.data;
   } catch (error) {
     console.error(error);

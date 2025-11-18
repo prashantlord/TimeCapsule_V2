@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
@@ -13,7 +15,7 @@ class OauthController extends Controller
 {
 
     /**
-     * Functoin: googleLogin
+     * Function: googleLogin
      * Description: redirect to google login
      * @param NA
      * @return void
@@ -31,7 +33,7 @@ class OauthController extends Controller
      * @return void
      */
 
-    public function googleAuthentication()
+    public function googleAuthentication(): JsonResponse|RedirectResponse
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
@@ -76,7 +78,7 @@ class OauthController extends Controller
      * @param NA
      * @return void
      */
-    public function githubAuthentication()
+    public function githubAuthentication(): JsonResponse|RedirectResponse
     {
         try {
             $githubUser = Socialite::driver('github')->stateless()->user();
