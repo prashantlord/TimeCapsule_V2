@@ -10,6 +10,7 @@ import Home from "./pages/homePage/Home";
 import Dashboard from "./pages/dashboardPage/Dashboard.jsx";
 import Create from "./pages/dashboardPage/Create.jsx";
 import MyCapsules from "./pages/dashboardPage/MyCapsules.jsx";
+import Public from "./pages/publicPage/Public.jsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/my",
     element: <MyCapsules />,
+  },
+  {
+    path: "/public",
+    element: <Public />,
   },
 ]);
 

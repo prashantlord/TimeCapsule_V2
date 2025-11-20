@@ -51,7 +51,7 @@ Route::get('/githubAuth', [OauthController::class, 'githubAuthentication']);
 /**
  * useCase: UserDate Fetch
  * Description: Fetch data from PrivateCapsules table from the front end through rest API
- * Routes: http://127.0.0.1:8000/api/private & http://127.0.0.1:8000/api/auth/private/create
+ * Routes: http://127.0.0.1:8000/api/private/fetch & http://127.0.0.1:8000/api/auth/private/create
  * Controller: PrivateCapsuleController
  */
 

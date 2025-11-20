@@ -30,45 +30,6 @@ import MyCapsulesListSection from "./components/MyCapsulesListSection";
 import MyCapsulesBanner from "./components/MyCapsulesBanner";
 import OpenCapsuleUI from "./components/OpenCapsuleUI";
 
-const mockCapsules = [
-  {
-    id: 1,
-    title: "Letter to My Future Self",
-    openingDate: new Date("2026-12-25"),
-    isPublic: false,
-    sealedAt: new Date("2025-01-15"),
-    imageCount: 8,
-    daysUntilOpen: 403,
-  },
-  {
-    id: 2,
-    title: "Our Wedding Memories 2025",
-    openingDate: new Date("2030-08-10"),
-    isPublic: true,
-    sealedAt: new Date("2025-08-10"),
-    imageCount: 24,
-    daysUntilOpen: 1726,
-  },
-  {
-    id: 3,
-    title: "Graduation Day Capsule",
-    openingDate: new Date("2026-06-01"),
-    isPublic: false,
-    sealedAt: new Date("2025-05-20"),
-    imageCount: 12,
-    daysUntilOpen: 195,
-  },
-  {
-    id: 4,
-    title: "Baby's First Year",
-    openingDate: new Date("2035-03-15"),
-    isPublic: false,
-    sealedAt: new Date("2025-03-15"),
-    imageCount: 47,
-    daysUntilOpen: 3403,
-  },
-];
-
 export default function MyCapsules() {
   const navigate = useNavigate();
 
@@ -180,7 +141,7 @@ export default function MyCapsules() {
             {vanityStats
               ? vanityStats?.inOrderLockedCapsule?.map((capsule, index) => {
                   const isPublic = false;
-                  const canOpen = daysFromToday(capsule.opening_date) === 0;
+                  const canOpen = daysFromToday(capsule.opening_date) <= 0;
                   return (
                     <MyCapsulesListSection
                       isPublic={isPublic}
