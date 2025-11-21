@@ -95,7 +95,10 @@ export default function Dashboard() {
       return acc; // otherwise keep previous accumulator
     }, null);
 
-    const res = await openPrivateCapsule({ private_capsules_id: id });
+    const res = await openPrivateCapsule({
+      private_capsules_id: id,
+      open_date: new Date(),
+    });
     if (res) {
       setOpenCapsule(result);
     } else {

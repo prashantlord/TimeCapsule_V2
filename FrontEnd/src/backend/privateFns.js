@@ -33,12 +33,27 @@ const createPrivateCapsule = async (payload) => {
     return res;
   } catch (err) {
     console.error(err);
+
     return false;
   }
 };
 
 const openPrivateCapsule = async (payload) => {
-  return true;
+  const token = JSON.parse(localStorage.getItem("auth_token"));
+  if (!token) return false;
+  const api_update = import.meta.env.VITE_API_PRIVATEUPDATE;
+  try {
+    const res = await axios.post(`${api_update}`, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
 
 export { createPrivateCapsule, getPrivateCapsules, openPrivateCapsule };

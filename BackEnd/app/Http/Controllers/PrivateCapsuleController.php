@@ -31,7 +31,7 @@ class PrivateCapsuleController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'User detail is not valid.',
-            ], 422);
+            ], 400);
         }
 
         try {
@@ -74,12 +74,18 @@ class PrivateCapsuleController extends Controller
     public function create(Request $req): JsonResponse
     {
         // Validate request data first
-        $req->validate([
+        $validator = Validator::make($req->all(), [
             'title'         => 'required|string|max:255',
             'message'       => 'required|string',
             'opening_date'  => 'required|date',
             'files.*'       => 'nullable|file|mimes:jpg,jpeg,png,webp',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => "Invalid data",
+            ], 400);
+        }
 
         DB::beginTransaction(); // Start transaction
 
@@ -138,6 +144,39 @@ class PrivateCapsuleController extends Controller
                 "success" => false,
                 "error" => $e->getMessage(),
                 "message" => "Something went wrong while creating the capsule."
+            ], 400);
+        }
+    }
+
+
+    public function update(Request $req): bool|JsonResponse
+    {
+        $validator = Validator::make($req->all(), [
+            'private_capsules_id' => "string|required",
+            'open_date' => "required|date"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => "Invalid data",
+            ], 400);
+        }
+
+
+        try {
+            $upd_details = PrivateCapsules::where('user_id', $req->user()->id)->where('id', $req->private_capsules_id)->update([
+                "open_status" => true,
+                "open_date" => $req->open_date
+            ]);
+
+            return response()->json([
+                'message' => "capsule Successfully updated",
+                'dt' => $upd_details
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => "error while updating the user details",
+                "error" => $e->getMessage()
             ], 400);
         }
     }

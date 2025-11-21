@@ -18,6 +18,7 @@ import {
   TrophyIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
+import { daysFromToday } from "../../../utils/functions";
 function VanitySection({ vanityStats, handleUnlock }) {
   const achivement = vanityStats.locked >= 5 && vanityStats.unlocked >= 1;
   console.log(vanityStats.inOrderLockedCapsule);
@@ -99,12 +100,12 @@ function VanitySection({ vanityStats, handleUnlock }) {
         >
           <ClockIcon className="w-16 h-16 text-purple-400 mx-auto mb-6" />
           <p className="text-6xl font-bold text-purple-300 mb-2">
-            {vanityStats.daysUntilNextUnlock}
+            {daysFromToday(vanityStats?.inOrderLockedCapsule[0]?.opening_date)}
           </p>
           <p className="text-2xl text-gray-300">
             days until your next capsule unlocks
           </p>
-          {vanityStats.daysUntilNextUnlock === 0 && (
+          {vanityStats.daysUntilNextUnlock <= 0 && (
             <button
               className="mt-8 px-8 py-4 cursor-pointer animate-pulse rounded-full font-semibold  text-lg  text-white  bg-purple-600/20 backdrop-blur-md border border-purple-400/30 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] hover:bg-purple-600/30 transition-all duration-300 flex items-center gap-3 mx-auto "
               onClick={() => {

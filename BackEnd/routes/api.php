@@ -57,9 +57,9 @@ Route::get('/githubAuth', [OauthController::class, 'githubAuthentication']);
 
 Route::post('/private/fetch', [PrivateCapsuleController::class, 'fetch']);
 Route::middleware("auth:sanctum")->post("/private/create", [PrivateCapsuleController::class, "create"]);
+Route::middleware("auth:sanctum")->post("/private/update", [PrivateCapsuleController::class, "update"]);
 
-
-
+// Route::post("/private/update", [PrivateCapsuleController::class, "update"]);
 
 
 
